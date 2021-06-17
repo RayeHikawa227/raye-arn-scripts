@@ -27,20 +27,22 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
+function s.cfilter(c) 
+	return c:IsType(TYPE_SPELL) and c:IsType(TYPE_CONTINUOUS) 
+end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if #g==0 then return end
 	Duel.SendtoHand(g,nil,REASON_EFFECT)
 	Duel.ConfirmCards(1-tp,g)
-	local tc=g:GetFirst() 
-	if tc and (tc:IsType(TYPE_SPELL) and tc:IsType(TYPE_CONTINUOUS))
-		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+	local og=Duel.GetOperatedGroup()
+	if og and og:IsExists(s.cfilter,1,nil) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 		and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 		if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
-		Duel.MoveToField(tc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
+		Duel.MoveToField(g:GetFirst(),tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 	end
 end

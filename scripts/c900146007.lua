@@ -24,6 +24,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_SPSUMMON)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,id+900)
 	e2:SetCondition(s.discon)
 	e2:SetCost(s.discost)
 	e2:SetTarget(s.distg)
@@ -57,7 +58,7 @@ function s.discon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbletoGraveAsCost,tp,LOCATION_MZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,Card.IsAbletoGraveAsCost,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_COST)
 end

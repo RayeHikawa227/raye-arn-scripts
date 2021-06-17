@@ -23,8 +23,8 @@ function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x700)
 end
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsPlayerCanAdditionalSummon(tp)
-		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsPlayerCanAdditionalSummon(tp)
 end
 function s.sumcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return not e:GetHandler():IsPublic() end
