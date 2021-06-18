@@ -25,7 +25,7 @@ function Auxiliary.CreateSummonEffect(c,id,str)
 	affected:SetCode(EVENT_FREE_CHAIN)
 	affected:SetCondition(Auxiliary.AffectedCondition)
 	c:RegisterEffect(affected)
-	return eff and affected
+	return eff
 end
 function Auxiliary.SummonCondition(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsPlayerAffectedByEffect(tp,CARD_OJAMAJO_CARNIVAL)
