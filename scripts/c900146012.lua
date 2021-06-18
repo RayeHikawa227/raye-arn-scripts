@@ -4,6 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
@@ -37,8 +38,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local b2=ct>=2 and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil)
 	local b3=ct>=3 and #dg>0
 	if b1 then
+		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,0))
 		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetDescription(aux.Stringid(id,3))
+		e1:SetDescription(aux.Stringid(id,5))
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE+EFFECT_FLAG_CLIENT_HINT)
 		e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
@@ -48,15 +50,17 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,tp)
 	end
-	if b2 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	if b2 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 		local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.thfilter),tp,LOCATION_GRAVE,0,1,2,nil)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
-	if b3 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+	if b3 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
 		Duel.BreakEffect()
+		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,4))
 		local dg=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_MZONE,nil)
 		Duel.Destroy(dg,REASON_EFFECT)
 	end
